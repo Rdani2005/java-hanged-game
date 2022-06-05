@@ -1,5 +1,8 @@
 package juego;
 
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 public class Functions {
 
     // ------------------------------ Variables ----------------------------------
@@ -50,7 +53,7 @@ public class Functions {
 
     // -------------------------- Methods -----------------------------------------------
     // Add new data to the Words List
-    private void Insetar(String dato) {
+    public void Insetar(String dato) {
         WordsList nuevo = new WordsList();
         nuevo.word = dato;
         nuevo.next = null;
@@ -75,5 +78,85 @@ public class Functions {
 
     }
 
+    // Look if the Word contains the 
+    public boolean comprobar(
+            // Word and letter
+            String word,
+            String data,
+            // Current counter
+            int letterCounter,
+            int failsCounter,
+            // body labels
+            JLabel middle,
+            JLabel upper,
+            JLabel head,
+            JLabel body,
+            JLabel RightArm,
+            JLabel LeftArm,
+            JLabel RightLeg,
+            JLabel LeftLeg,
+            // Letters
+            JLabel letter1,
+            JLabel letter2,
+            JLabel letter3,
+            JLabel letter4,
+            JLabel letter5,
+            JLabel letter6,
+            JLabel letter7,
+            JLabel letter8
+    ) {
+        System.out.println("Palabra: " + word);
+        // Find if the word contains the letter that was introduced by the user
+        if (word.contains(data)) {
+            JOptionPane.showMessageDialog(null, "La letra es correcta!");
+            letterCounter++;
+            if (letterCounter == word.length()) {
+                JOptionPane.showMessageDialog(null, "Haz ganado!!!");
+            }
+            
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, "La letra es incorrecta");
+            failsCounter--;
+            // Change data on screen
+            switch (failsCounter) {
+                case 7:
+                    letter1.setText(data);
+                    middle.setVisible(true);
+                    break;
+                case 6:
+                    letter2.setText(data);
+                    upper.setVisible(true);
+                    break;
+                case 5:
+                    letter3.setText(data);
+                    head.setVisible(true);
+                    break;
+                case 4:
+                    letter4.setText(data);
+                    body.setVisible(true);
+                    break;
+                case 3:
+                    letter5.setText(data);
+                    LeftArm.setVisible(true);
+                    break;
+                case 2:
+                    letter6.setText(data);
+                    RightArm.setVisible(true);
+                    break;
+                case 1:
+                    letter7.setText(data);
+                    LeftLeg.setVisible(true);
+                    break;
+                case 0:
+                    letter8.setText(data);
+                    RightLeg.setVisible(true);
+                    break;
+            }
+
+        }
+        
+        return false;
+    }
 
 }
