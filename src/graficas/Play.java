@@ -177,7 +177,7 @@ public class Play extends javax.swing.JFrame {
         // Is it a character or not
         if (validateTxt(LetterTxt.getText().trim())) {
             // Is it correct or not?
-            if (funciones.comprobar(
+            int temp = funciones.comprobar(
                     // Word and letter
                     palabra,
                     LetterTxt.getText().trim(),
@@ -202,14 +202,16 @@ public class Play extends javax.swing.JFrame {
                     letter6,
                     letter7,
                     letter8
-            )) {
+            );
+            if (temp == 1) {
                 // It was correct
                 letterCounter++;
-            } else {
+            } else if (temp == 3){
                 // I wasnt correct..
                 failsCounter--;
+                tryLbl.setText("Intentos Restantes: " + failsCounter);
             }
-
+            System.out.println("Letras Correctas: " + letterCounter + " Letras Incorrectas: " + failsCounter);
         } else {
             // User did not use a character
             JOptionPane.showMessageDialog(null,
@@ -248,27 +250,19 @@ public class Play extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Play.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Play.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Play.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Play.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Play().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Play().setVisible(true);
         });
     }
 
     // Añadimos una nueva palabra ingresada por el usuario
     private void anadirPalabra() {
-        String palabra = JOptionPane.showInputDialog("Ingrese la nueva palabra");
-        funciones.Insetar(palabra);
+        String newWord = JOptionPane.showInputDialog("Ingrese la nueva palabra");
+        funciones.Insetar(newWord);
         System.out.println("Palabra agregada correctamente!");
         RestartGame();
     }

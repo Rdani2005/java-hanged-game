@@ -21,6 +21,7 @@ public class Functions {
     };
     // Words List 
     private WordsList wordsList = null;
+    private RightLettersList rightList = null;
 
     // ------------------------ Functions ----------------------------------------
     // Get the word list size
@@ -79,7 +80,7 @@ public class Functions {
     }
 
     // Look if the Word contains the 
-    public boolean comprobar(
+    public int comprobar(
             // Word and letter
             String word,
             String data,
@@ -108,13 +109,20 @@ public class Functions {
         System.out.println("Palabra: " + word);
         // Find if the word contains the letter that was introduced by the user
         if (word.contains(data)) {
-            JOptionPane.showMessageDialog(null, "La letra es correcta!");
-            letterCounter++;
-            if (letterCounter == word.length()) {
-                JOptionPane.showMessageDialog(null, "Haz ganado!!!");
+            if (searchLetter(data)) {
+                JOptionPane.showMessageDialog(null, "La letra es correcta!");
+                letterCounter++;
+                addRightLetters(data);
+                if (letterCounter == word.length()) {
+                    JOptionPane.showMessageDialog(null, "Haz ganado!!!");    
+                }
+                return 1;
+            } else {
+                JOptionPane.showMessageDialog(null, "La letra ya ha sido ingresada!", "Error", JOptionPane.WARNING_MESSAGE);
+                return 2;
             }
+
             
-            return true;
         } else {
             JOptionPane.showMessageDialog(null, "La letra es incorrecta");
             failsCounter--;
@@ -155,8 +163,38 @@ public class Functions {
             }
 
         }
-        
-        return false;
+
+        return 3;
     }
 
+    // Add letters to the RightLetters Tupple List
+    private void addRightLetters(String data) {
+        RightLettersList nuevo = new RightLettersList();
+        nuevo.letter = data;
+        nuevo.next = null;
+
+        // Ver si la lista esta vacia o no
+        if (rightList == null) {
+            rightList = nuevo;
+        } else {
+            // Puntero apunta a lista, enlazando el nuevo nodo
+            nuevo.next = rightList;
+            rightList = nuevo;
+        }
+    }
+
+    // Search for a letter on the RightLetters tupple list
+    private boolean searchLetter(String data) {
+        int counter = 0;
+        RightLettersList temp = rightList;
+        while (temp != null) {
+            if (temp.letter.equals(data)) {
+                counter++;
+                System.out.println(temp.letter);
+            }
+            temp = temp.next;
+        }
+
+        return counter == 0;
+    }
 }
