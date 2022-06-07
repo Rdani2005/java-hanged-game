@@ -1,7 +1,7 @@
 package graficas;
 
 import javax.swing.JOptionPane;
-import juego.Functions;
+import juego.Tablero;
 
 /**
  *
@@ -9,12 +9,9 @@ import juego.Functions;
  */
 public class Play extends javax.swing.JFrame {
 
-    private int failsCounter = 8;
-    private int letterCounter = 0;
+    private int vidas = 8;
 
-    private final Functions funciones = new Functions();
-
-    String palabra = "";
+    private Tablero juego = new Tablero();
 
     public Play() {
         initComponents();
@@ -30,10 +27,6 @@ public class Play extends javax.swing.JFrame {
 
         LegLeft.setVisible(false);
         LegRight.setVisible(false);
-
-        funciones.anadirVector();
-
-        palabra = funciones.getRandomWord();
     }
 
 
@@ -62,8 +55,7 @@ public class Play extends javax.swing.JFrame {
         letter7 = new javax.swing.JLabel();
         letter8 = new javax.swing.JLabel();
         Copyright = new javax.swing.JLabel();
-        RestarButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        AdivinadosLbl = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -153,88 +145,25 @@ public class Play extends javax.swing.JFrame {
         Copyright.setText("<html> &#169 Danny Sequeira 2022 &#169 <html/>");
         getContentPane().add(Copyright, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 510, -1, -1));
 
-        RestarButton.setText("Restart");
-        RestarButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RestarButtonActionPerformed(evt);
-            }
-        });
-        getContentPane().add(RestarButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 450, -1, -1));
-
-        jButton2.setText("Agregar Palabra");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 490, -1, -1));
+        AdivinadosLbl.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        getContentPane().add(AdivinadosLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, -1, 20));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Is it a character or not
         if (validateTxt(LetterTxt.getText().trim())) {
-            // Is it correct or not?
-            int temp = funciones.comprobar(
-                    // Word and letter
-                    palabra,
-                    LetterTxt.getText().trim(),
-                    // Current counter
-                    letterCounter,
-                    failsCounter,
-                    // body labels
-                    MiddlePart,
-                    UpperPart,
-                    Head,
-                    Body,
-                    ArmRight,
-                    ArmLeft,
-                    LegRight,
-                    LegLeft,
-                    // Letters
-                    letter1,
-                    letter2,
-                    letter3,
-                    letter4,
-                    letter5,
-                    letter6,
-                    letter7,
-                    letter8
-            );
-            if (temp == 1) {
-                // It was correct
-                letterCounter++;
-            } else if (temp == 3){
-                // I wasnt correct..
-                failsCounter--;
-                tryLbl.setText("Intentos Restantes: " + failsCounter);
-            }
-            System.out.println("Letras Correctas: " + letterCounter + " Letras Incorrectas: " + failsCounter);
+            verificarJuego(LetterTxt.getText().trim());
+            LetterTxt.setText("");
         } else {
-            // User did not use a character
-            JOptionPane.showMessageDialog(null,
-                    "Ingrese una letra unicamente!",
-                    "Advertencia",
-                    JOptionPane.WARNING_MESSAGE
-            );
+            JOptionPane.showMessageDialog(null, "No es un caracter");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void LetterTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LetterTxtActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_LetterTxtActionPerformed
-
-    private void RestarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RestarButtonActionPerformed
-
-        RestartGame();
-    }//GEN-LAST:event_RestarButtonActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        anadirPalabra();
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Validate that there's only one character on the textarea
     private boolean validateTxt(String data) {
@@ -261,10 +190,7 @@ public class Play extends javax.swing.JFrame {
 
     // Añadimos una nueva palabra ingresada por el usuario
     private void anadirPalabra() {
-        String newWord = JOptionPane.showInputDialog("Ingrese la nueva palabra");
-        funciones.Insetar(newWord);
-        System.out.println("Palabra agregada correctamente!");
-        RestartGame();
+
     }
 
     // Method to restart the game
@@ -287,16 +213,82 @@ public class Play extends javax.swing.JFrame {
         letter5.setText("");
         letter6.setText("");
         letter7.setText("");
-
         letter8.setText("");
         // We need to restar the counters and variables
-        failsCounter = 8;
-        letterCounter = 0;
-        tryLbl.setText("Intentos Restantes: " + failsCounter);
-        palabra = funciones.getRandomWord();
     }
+
+    private void verificarJuego(String letra) {
+        boolean jugando = juego.Verifica(letra);
+        juego.showUserWord(AdivinadosLbl);
+
+        if (jugando) {
+
+        } else {
+            vidas--;
+            System.out.println("vidas " + vidas);
+            createBody(letra);
+            tryLbl.setText("Intentos Restantes: " + vidas);
+        }
+
+        if (juego.Ganado()) {
+            JOptionPane.showMessageDialog(null, "Haz ganado");
+            Win win = new Win();
+            win.setVisible(true);
+            this.setVisible(false);
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Aun no haz ganado");
+        }
+
+        if (vidas == 0) {
+            JOptionPane.showMessageDialog(null, "Haz Perdido");
+            Lose lose = new Lose();
+            lose.setVisible(false);
+        }
+    }
+
+    private void createBody(String letter) {
+        switch (vidas) {
+            case 7:
+                MiddlePart.setVisible(true);
+                letter1.setText(letter);
+                break;
+            case 6:
+                UpperPart.setVisible(true);
+                letter2.setText(letter);
+                break;
+            case 5:
+                Head.setVisible(true);
+                letter3.setText(letter);
+                break;
+            case 4:
+                Body.setVisible(true);
+                letter4.setText(letter);
+                break;
+            case 3:
+                ArmLeft.setVisible(true);
+                letter5.setText(letter);
+                break;
+            case 2:
+                ArmRight.setVisible(true);
+                letter6.setText(letter);
+                break;
+            case 1:
+                LegLeft.setVisible(true);
+                letter7.setText(letter);
+                break;
+            case 0:
+                LegRight.setVisible(true);
+                letter8.setText(letter);
+                break;
+
+        }
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AddLetterlbl;
+    private javax.swing.JLabel AdivinadosLbl;
     private javax.swing.JLabel ArmLeft;
     private javax.swing.JLabel ArmRight;
     private javax.swing.JLabel Body;
@@ -306,11 +298,9 @@ public class Play extends javax.swing.JFrame {
     private javax.swing.JLabel LegRight;
     private javax.swing.JTextField LetterTxt;
     private javax.swing.JLabel MiddlePart;
-    private javax.swing.JButton RestarButton;
     private javax.swing.JLabel TitleLbl;
     private javax.swing.JLabel UpperPart;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel letter1;
     private javax.swing.JLabel letter2;
     private javax.swing.JLabel letter3;
