@@ -11,7 +11,12 @@ public class Play extends javax.swing.JFrame {
 
     private int vidas = 8;
 
-    private Tablero juego = new Tablero();
+    private Tablero juego = new Tablero(
+            Integer.parseInt(JOptionPane.showInputDialog("Cual es la dificultad del juego?"
+                    + "1. Facil\n"
+                    + "2. Medio\n"
+                    + "3. Dificil\n"))
+    );
 
     public Play() {
         initComponents();
@@ -56,13 +61,15 @@ public class Play extends javax.swing.JFrame {
         letter8 = new javax.swing.JLabel();
         Copyright = new javax.swing.JLabel();
         AdivinadosLbl = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         TitleLbl.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
         TitleLbl.setText("Juego");
-        getContentPane().add(TitleLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 30, -1, -1));
+        getContentPane().add(TitleLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, -1, -1));
 
         tryLbl.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         tryLbl.setText("Intentos Restantes: 8");
@@ -147,6 +154,12 @@ public class Play extends javax.swing.JFrame {
 
         AdivinadosLbl.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         getContentPane().add(AdivinadosLbl, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, -1, 20));
+
+        jLabel1.setText("Letras Erroneas");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 270, -1, -1));
+
+        jLabel2.setText("Letras Adivinadas");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -243,7 +256,8 @@ public class Play extends javax.swing.JFrame {
         if (vidas == 0) {
             JOptionPane.showMessageDialog(null, "Haz Perdido");
             Lose lose = new Lose();
-            lose.setVisible(false);
+            lose.setVisible(true);
+            this.setVisible(false);
         }
     }
 
@@ -301,6 +315,8 @@ public class Play extends javax.swing.JFrame {
     private javax.swing.JLabel TitleLbl;
     private javax.swing.JLabel UpperPart;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel letter1;
     private javax.swing.JLabel letter2;
     private javax.swing.JLabel letter3;

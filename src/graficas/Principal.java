@@ -1,11 +1,12 @@
 package graficas;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Rdani2005
  */
 public class Principal extends javax.swing.JFrame {
-
 
     public Principal() {
         initComponents();
@@ -33,6 +34,7 @@ public class Principal extends javax.swing.JFrame {
         Titlelbl.setForeground(new java.awt.Color(255, 255, 255));
         Titlelbl.setText("Juego Del Ahorcado");
 
+        copyrightLbl.setForeground(new java.awt.Color(255, 255, 255));
         copyrightLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         copyrightLbl.setText("<html> &#169 Danny Sequeira 2022 &#169 <html/>");
         copyrightLbl.setToolTipText("");
@@ -55,6 +57,11 @@ public class Principal extends javax.swing.JFrame {
         aboutBtn.setBackground(new java.awt.Color(0, 0, 0));
         aboutBtn.setForeground(new java.awt.Color(255, 255, 255));
         aboutBtn.setText("Ver Más");
+        aboutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -123,6 +130,20 @@ public class Principal extends javax.swing.JFrame {
         play.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_playBtnActionPerformed
+
+    private void aboutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutBtnActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null,
+                "JUEGO DESARROLLADO POR: Danny Sequeira\n"
+                + "El juego consiste en un ahorcado, en el cual el usuario va a poder"
+                + "\ningresar una unica letra, e ir adivinando las letras de la\n"
+                + "palabra. Presionando un botón, podrá observar si la letra es correcta\n"
+                + "o incorrecta. En caso de ser incorrecta, el usuario observará como\n"
+                + "poco a poco, el personaje del ahorcado va apareciendo.",
+                "Acerca del juego",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }//GEN-LAST:event_aboutBtnActionPerformed
 
     /**
      * @param args the command line arguments
